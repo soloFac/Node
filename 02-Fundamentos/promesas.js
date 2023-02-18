@@ -50,7 +50,6 @@ const getSalario = (id) => {
   } )
 }
 
-const id = 3
 
 // getEmpleado(id)
 //   .then(empleado => console.log(empleado))
@@ -61,14 +60,14 @@ const id = 3
 //   .catch(err => console.log(err))
 
 
-// EVITAR ESTO A TODA COSTA
-getEmpleado(id)
-  .then(empleado => {
-    getSalario(id)
-      .then(salario => {
-        console.log('El empleado: ', empleado, ' tiene un salario de: ', salario)
-      })
-      .catch( err => console.log(err))
-  })
-  .catch( err => console.log(err) )
+const id = 4
+let nombre;
 
+// PROMESAS EN CADENA
+getEmpleado(id)
+  .then( empleado => {
+    nombre = empleado;
+    return getSalario( id )
+  })
+  .then( salario => console.log(`El empleado: ${nombre} tiene un salario: ${salario}`))
+  .catch(err => console.log(err))
