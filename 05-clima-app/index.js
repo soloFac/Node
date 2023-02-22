@@ -33,16 +33,16 @@ const main = async () => {
         const { desc, temp, min, max } = await busquedas.climaLugar( lat, lng )
         
         console.log('\nInformación de la ciudad\n'.green)
-        console.log(`Ciudad: ${ nombre }`.green)
-        console.log(`Lat: ${ lat }`.green)
-        console.log(`Lng: ${ lng }`.green)
-        console.log(`Temperatura: ${ temp }`.green)
-        console.log(`Mínima: ${ min }`.green)
-        console.log(`Máxima: ${ max }`.green)
+        console.log('Ciudad: ', nombre.green)
+        console.log('Lat: ', lat.green)
+        console.log('Lng: ', lng.green)
+        console.log('Temperatura: ', temp.green)
+        console.log('Mínima: ', min.green)
+        console.log('Máxima: ', max.green)
       break;
 
       case 2:
-        busquedas.historial.forEach( ( lugar, i ) => {
+        busquedas.historialCapitalizado.forEach( ( lugar, i ) => {
           const idx = `${ i + 1 }.`.green;
           console.log(`${ idx } ${ lugar }`)
         })
