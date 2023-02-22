@@ -1,3 +1,4 @@
+require('dotenv').config()
 const axios = require('axios')
 
 class Busquedas {
@@ -9,7 +10,7 @@ class Busquedas {
 
   get paramsMapbox() {
     return {
-      'access_token': 'pk.eyJ1Ijoia2xlcml0aCIsImEiOiJja2tvZHh4Y3YwMDhnMnBvY3ozbHUxdGJvIn0.3zptKSSxJrM5VmfjnkKMYA',
+      'access_token': process.env.MAPBOX_KEY,
       'language': 'es',
       'limit': 5
     }
