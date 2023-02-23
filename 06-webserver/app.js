@@ -1,10 +1,12 @@
+const hbs = require('hbs')
 const express = require('express')
+
 const app = express()
 const port = 8080;
 
-// Todo: require('hbs')
-// Renderizar con hbs - La idea de hbs es utilizar el patron MVC
+// Handlebars
 app.set('view engine', 'hbs');
+hbs.registerPartials(__dirname + '/views/partials');
 
 // midleware para hacer publica la carpeta public, con index.html
 // Servir contenido estatico
@@ -18,11 +20,17 @@ app.get('/', (req, res) => {
 })
 
 app.get('/generic', (req, res) => {
-  res.sendFile(__dirname + '/public/generic.html')
+  res.render('generic', {
+    nombre: 'Franco de la Rosa',
+    titulo: 'Curso de Node'
+  })
 })
 
 app.get('/elements', (req, res) => {
-  res.sendFile(__dirname + '/public/elements.html')
+  res.render('elements', {
+    nombre: 'Franco de la Rosa',
+    titulo: 'Curso de Node'
+  })
 })
 
 app.get('*', (req, res) => {
