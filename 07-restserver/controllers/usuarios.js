@@ -11,8 +11,12 @@ const usuariosPut = ((req, res) => {
 })
 
 const usuariosPost = ((req, res) => {
+  const { id, nombre, apellido, edad } = req.body
   res.status(201).json({
-    msg: 'post API'
+    msg: 'post API',
+    nombre,
+    apellido,
+    edad
   })
 })
 
