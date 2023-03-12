@@ -1,4 +1,6 @@
 const { response, request } = require('express')
+const bcryptjs = require('bcryptjs')
+
 const Usuario = require('../models/usuario')
 
 const usuariosGet = ( (req, res) => {
@@ -15,10 +17,20 @@ const usuariosGet = ( (req, res) => {
 })
 
 const usuariosPost = async (req, res) => {
-  const body = req.body
+  const { nombre, correo, password, rol } = req.body
   // A pesar de que le envie campos que no estan definidos en el modelo, estos seran ignorados y no seran grabados
-  const usuario = new Usuario( body )
+  const usuario = new Usuario( { nombre, correo, password, rol } )
 
+  // - Verificar si el correo existe
+
+
+  // - Encriptar la contraseña
+  // Salt es el numero de vueltas que se quiere hacer para hacer mas complicado la encriptacion, tambien tardara mas en generarse
+  // Es un Hash de 1 sola via
+  const salt = bcryptjs.genSaltSync()
+  usuario.password = bcryptjs.hashSync( password, salt )
+
+  // - Guardar en la base de datos
   await usuario.save()
 
   res.status(201).json({
