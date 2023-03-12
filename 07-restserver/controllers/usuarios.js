@@ -1,4 +1,5 @@
 const { response, request } = require('express')
+const Usuario = require('../models/usuario')
 
 const usuariosGet = ( (req, res) => {
   const { q, nombre = 'No name', apikey, page = 1, limit } = req.query
@@ -13,16 +14,18 @@ const usuariosGet = ( (req, res) => {
   })
 })
 
-const usuariosPost = ((req, res) => {
-  const { id, nombre, apellido, edad } = req.body
+const usuariosPost = async (req, res) => {
+  const body = req.body
+  // A pesar de que le envie campos que no estan definidos en el modelo, estos seran ignorados y no seran grabados
+  const usuario = new Usuario( body )
+
+  await usuario.save()
 
   res.status(201).json({
     msg: 'post API',
-    nombre,
-    apellido,
-    edad
+    usuario
   })
-})
+}
 
 const usuariosPut = ((req, res) => {
   const { id } =  req.params
