@@ -39,7 +39,8 @@ const usuariosPost = async (req, res) => {
 
 const usuariosPut = async (req, res) => {
   const { id } =  req.params
-  const { password, google, ...info } = req.body
+  // Si enviamos en el body _id, aquí no deberiamos procesarlo, por lo tanto lo extraemos
+  const { _id, password, google, ...info } = req.body
   
   // TODO validar contra base de datos
   if ( password ) { // Significa que desea actualizar su contraseña
