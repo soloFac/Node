@@ -37,14 +37,25 @@ const usuariosPost = async (req, res) => {
   })
 }
 
-const usuariosPut = ((req, res) => {
+const usuariosPut = async (req, res) => {
   const { id } =  req.params
+  const { password, google, ...info } = req.body
   
+  // TODO validar contra base de datos
+  if ( password ) { // Significa que desea actualizar su contraseña
+    // Podriamos hacer una ruta especial, asegurarnos de que sea la misma persona que quiere actualizar su contraseña, infinidad de validaciones que se pueden hacer
+    // Luego se validaran las rutas contra diferentes accesos y errores
+    const salt = bcryptjs.genSaltSync()
+    info.password = bcryptjs.hashSync( password, salt )
+  }
+
+  const usuario = await Usuario.findByIdAndUpdate( id, info )
+
   res.status(201).json({
     msg: 'put API',
-    id
+    usuario
   })
-})
+}
 
 const usuariosDelete = ((req, res) => {
   res.json({
