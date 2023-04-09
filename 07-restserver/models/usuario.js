@@ -19,8 +19,7 @@ const UsuarioSchema = Schema({
   },
   rol: {
     type: String,
-    required: true,
-    enum: ['ADMIN_ROL', 'USER_ROL']
+    required: true
   },
   estado: {
     type: Boolean,
@@ -31,6 +30,13 @@ const UsuarioSchema = Schema({
     default: false
   }
 })
+
+// Sobre-escribo la funcion toJSON definida en el Schema, para que al pasarle como argumento usuario
+// ya no retorne la __v ni el password
+UsuarioSchema.methods.toJSON = function() {
+  const { __v, password, ...usuario } = this.toObject();
+  return usuario
+}
 
 // Mongoose va a ponerle a la coleccion Usuarios
 module.exports = model( 'Usuario', UsuarioSchema )

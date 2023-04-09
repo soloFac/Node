@@ -1,5 +1,4 @@
 const { response, request } = require('express')
-const { validationResult } = require('express-validator')
 const bcryptjs = require('bcryptjs')
 
 const Usuario = require('../models/usuario')
@@ -18,13 +17,6 @@ const usuariosGet = ( (req, res) => {
 })
 
 const usuariosPost = async (req, res) => {
-  const errors = validationResult(req)
-
-  if(!errors.isEmpty()) {
-    return res.status(400).json({
-      errors
-    })
-  }
 
   const { nombre, correo, password, rol } = req.body
   // A pesar de que le envie campos que no estan definidos en el modelo, estos seran ignorados y no seran grabados
