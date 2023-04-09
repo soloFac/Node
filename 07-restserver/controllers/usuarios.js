@@ -22,14 +22,6 @@ const usuariosPost = async (req, res) => {
   // A pesar de que le envie campos que no estan definidos en el modelo, estos seran ignorados y no seran grabados
   const usuario = new Usuario( { nombre, correo, password, rol } )
 
-  // - Verificar si el correo existe
-  const existeEmail = await Usuario.findOne({ correo })
-  if( existeEmail ) {
-    return res.status(400).json({
-      msg: 'Ese correo ya existe!'
-    })
-  }
-
   // - Encriptar la contraseña
   // Salt es el numero de vueltas que se quiere hacer para hacer mas complicado la encriptacion, tambien tardara mas en generarse
   // Es un Hash de 1 sola via

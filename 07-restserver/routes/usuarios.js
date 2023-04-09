@@ -4,7 +4,7 @@ const { check } = require('express-validator')
 const { usuariosGet, usuariosPut, usuariosPost, usuariosDelete, usuariosPatch } = require('../controllers/usuarios')
 
 const { validarCampos } = require('../middlewares/validar-campos')
-const { esRoleValido } = require('../helpers/db-validators')
+const { esRoleValido, emailExiste } = require('../helpers/db-validators')
 
 const router = Router()
 
@@ -18,9 +18,10 @@ router.post('/', [
   // MIDDLEWARES
   // El check va preparando los errores, esta creando en la req todos los errores de estos middlewares
   // le especifico que campo del body quiero checkear
-  check('correo', 'El correo no es valido').isEmail(),
   check('nombre', 'El nombre es obligatorio').not().isEmpty(),
   check('password', 'El password debe de tener más de 6 letras').isLength({ min: 6 }),
+  check('correo', 'El correo no es valido').isEmail(),
+  check('correo').custom( emailExiste ),
   // check('rol').custom( (rol) => esRoleValido(rol) ),
   check('rol').custom( esRoleValido ),
   // validarCampos recibe el req, res, next
