@@ -3,18 +3,20 @@ const bcryptjs = require('bcryptjs')
 
 const Usuario = require('../models/usuario')
 
-const usuariosGet = ( (req, res) => {
-  const { q, nombre = 'No name', apikey, page = 1, limit } = req.query
+const usuariosGet = async (req, res) => {
+  const { limite: lim = 5, desde = 5 } = req.query
+  console.log(typeof lim);
+  // const { q, nombre = 'No name', apikey, page = 1, limit } = req.query
+  // TODO: Realizar validaciones. Controlar los errores que puedan ocurrir en el QueryParams, puede venir un string 'sdfgh' en lugar de un numero valido.
+  const usuarios = await Usuario.find()
+    .skip(desde)
+    .limit(lim) // Ya no es necesario utilizar Number porque limit también puede recibir strings, porque viene desde el query como un string
+  // Limitamos los usuarios por cuestiones de tamaño en la información
 
   res.json({
-    msg: 'get API',
-    q,
-    nombre,
-    apikey,
-    page,
-    limit
+    usuarios
   })
-})
+}
 
 const usuariosPost = async (req, res) => {
 
@@ -38,6 +40,7 @@ const usuariosPost = async (req, res) => {
 }
 
 const usuariosPut = async (req, res) => {
+  // Extraigo lo que viene de la URL
   const { id } =  req.params
   // Si enviamos en el body _id, aquí no deberiamos procesarlo, por lo tanto lo extraemos
   const { _id, password, google, ...info } = req.body
@@ -52,10 +55,8 @@ const usuariosPut = async (req, res) => {
 
   const usuario = await Usuario.findByIdAndUpdate( id, info )
 
-  res.status(201).json({
-    msg: 'put API',
-    usuario
-  })
+  // Me regresa un _id pero no es el mismo
+  res.status(201).json(usuario)
 }
 
 const usuariosDelete = ((req, res) => {

@@ -13,11 +13,11 @@ const router = Router()
 router.get('/', usuariosGet)
 
 router.put('/:id', [
-  // check puede darse cuenta de los parametros o los segmentos
-  check('id', 'No es un ID válido').isMongoId(),
-  check('id').custom( existeUsuarioId ),
-  check('rol').custom( esRoleValido ),
-  validarCampos
+  // check puede darse cuenta de los parametros o los segmentos -> URL
+  check('id', 'No es un ID válido').isMongoId(), // Verifico que es un Id valido de Mongo.
+  check('id').custom( existeUsuarioId ),  // Verifico que el id de Mongo valido esta registrado.
+  check('rol').custom( esRoleValido ),  
+  validarCampos // Para que no continue a la ruta si hay algun error.
 ],
 usuariosPut)
 
@@ -28,11 +28,10 @@ router.post('/', [
   check('nombre', 'El nombre es obligatorio').not().isEmpty(),
   check('password', 'El password debe de tener más de 6 letras').isLength({ min: 6 }),
   check('correo', 'El correo no es valido').isEmail(),
-  check('correo').custom( emailExiste ),
+  check('correo').custom( emailExiste ),  // correo es enviado como parametro a emailExiste
   // check('rol').custom( (rol) => esRoleValido(rol) ),
-  check('rol').custom( esRoleValido ),
-  // validarCampos recibe el req, res, next
-  validarCampos
+  check('rol').custom( esRoleValido ),  // Cuando el parametro tiene el mismo nombre se lo puede simplificar de esta manera.
+  validarCampos // recibe el req, res, next
 ] ,usuariosPost)
 
 router.delete('/', usuariosDelete)
