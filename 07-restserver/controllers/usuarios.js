@@ -10,10 +10,10 @@ const usuariosGet = async (req, res) => {
   // Para disparar ambas respuestas de manera simultanea lo que voy a hacer es lo siguiente:
   // Hay que poner el await para que ejecute las promesasa, si una da error, todas dan error
   const [total, usuarios] = await Promise.all([
-    Usuario.countDocuments(query),
-    Usuario.find(query)
-      .skip(desde)
-      .limit(lim)
+    Usuario.countDocuments( query ),
+    Usuario.find( query )
+      .skip( desde )
+      .limit( lim )
   ])
 
   res.json({
@@ -63,11 +63,16 @@ const usuariosPut = async (req, res) => {
   res.status(201).json(usuario)
 }
 
-const usuariosDelete = ((req, res) => {
+const usuariosDelete = async (req, res) => {
+  const { id } = req.params
+
+  // Físicamente lo borramos
+  const usuario = await Usuario.findByIdAndUpdate( id, { estado: false })
+
   res.json({
-    msg: 'delete API'
+    usuario
   })
-})
+}
 
 const usuariosPatch = ((req, res) => {
   res.json({

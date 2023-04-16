@@ -34,7 +34,11 @@ router.post('/', [
   validarCampos // recibe el req, res, next
 ] ,usuariosPost)
 
-router.delete('/', usuariosDelete)
+router.delete('/:id', 
+  check('id', 'No es un ID válido').isMongoId(), // Verifico que es un Id valido de Mongo.
+  check('id').custom( existeUsuarioId ),  // Verifico que el id de Mongo valido esta registrado.,
+  validarCampos,
+  usuariosDelete)
 
 router.patch('/', usuariosPatch)
 
