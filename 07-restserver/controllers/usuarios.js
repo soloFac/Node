@@ -4,16 +4,20 @@ const bcryptjs = require('bcryptjs')
 const Usuario = require('../models/usuario')
 
 const usuariosGet = async (req, res) => {
-  const { limite: lim = 5, desde = 5 } = req.query
-  console.log(typeof lim);
-  // const { q, nombre = 'No name', apikey, page = 1, limit } = req.query
-  // TODO: Realizar validaciones. Controlar los errores que puedan ocurrir en el QueryParams, puede venir un string 'sdfgh' en lugar de un numero valido.
-  const usuarios = await Usuario.find()
-    .skip(desde)
-    .limit(lim) // Ya no es necesario utilizar Number porque limit también puede recibir strings, porque viene desde el query como un string
-  // Limitamos los usuarios por cuestiones de tamaño en la información
+  const { limite: lim = 5, desde = 0 } = req.query
+  const query = { estado: true }
+
+  // Para disparar ambas respuestas de manera simultanea lo que voy a hacer es lo siguiente:
+  // Hay que poner el await para que ejecute las promesasa, si una da error, todas dan error
+  const [total, usuarios] = await Promise.all([
+    Usuario.countDocuments(query),
+    Usuario.find(query)
+      .skip(desde)
+      .limit(lim)
+  ])
 
   res.json({
+    total, 
     usuarios
   })
 }
@@ -30,7 +34,7 @@ const usuariosPost = async (req, res) => {
   const salt = bcryptjs.genSaltSync()
   usuario.password = bcryptjs.hashSync( password, salt )
 
-  // - Guardar en la base de datos
+  // - Guardo en la base de datos
   await usuario.save()
 
   res.status(201).json({
