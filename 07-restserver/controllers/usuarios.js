@@ -63,14 +63,15 @@ const usuariosPut = async (req, res) => {
   res.status(201).json(usuario)
 }
 
+// Mi delete de usuarios solo debería funcionar si es un usuario Administrador o de algún rol especifico
 const usuariosDelete = async (req, res) => {
   const { id } = req.params
-
-  // Físicamente lo borramos
+  
   const usuario = await Usuario.findByIdAndUpdate( id, { estado: false })
+  const usuarioAutenticado = req.usuario
 
   res.json({
-    usuario
+    usuario, usuarioAutenticado
   })
 }
 
