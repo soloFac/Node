@@ -30,3 +30,12 @@ La primera condicion de seguridad se debe saber, todos los token son almacenados
 - Local Storage (permanece persistente en el equipo aunque reiniciemos la maquina): es totalmente manipulable por el cliente con JS.
 
 - Session Storage (se elimina cuando se cierra el navegador)
+
+### Agrego variables de entorno utilizadas
+
+PORT=8080
+MONGODB_CNN=mongodb+srv://diaf:jtIeDaH27byxQz9U@micluster.vkzc7gr.mongodb.net/cafeDB
+SECRETORPRIVATEKEY=Est03sMyPubl1cK3y23@913
+
+GOOGLE_CLIENT_ID=110779131529-6prh35mpdv5le8986mitp6ctai38v6vg.apps.googleusercontent.com
+GOOGLE_SECRET_ID=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
