@@ -1,18 +1,26 @@
 const { Router } = require('express')
 const { check } = require('express-validator')
 
-const { usuariosGet, usuariosPut, usuariosPost, usuariosDelete, usuariosPatch } = require('../controllers/usuarios')
+// const { validarCampos } = require('../middlewares/validar-campos')
+// const { validarJWT } = require('../middlewares/validar-jwt')
+// const { esAdminRole, tieneRole } = require('../middlewares/validar-roles')
 
-const { validarCampos } = require('../middlewares/validar-campos')
-const { validarJWT } = require('../middlewares/validar-jwt')
-const { esAdminRole, tieneRole } = require('../middlewares/validar-roles')
+const { validarCampos,
+        validarJWT,
+        esAdminRole,
+        tieneRole } = require('../middlewares')
 
 const { esRoleValido, emailExiste, existeUsuarioId } = require('../helpers/db-validators')
+
+const { usuariosGet,
+        usuariosPut,
+        usuariosPost,
+        usuariosDelete,
+        usuariosPatch } = require('../controllers/usuarios')
 
 const router = Router()
 
 // En el server ya estoy configurando la ruta para '/api/usuario'
-
 router.get('/', usuariosGet)
 
 router.put('/:id', [
