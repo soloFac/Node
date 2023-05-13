@@ -32,17 +32,25 @@
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
   <script>
-    // Mantener como una función tradicional, no funciona como funcion de flecha
     function handleCredentialResponse(response) {
-      // No se recomienda hacer la decodificación del JWT para nostros (supongo que es por este momento)
-      // Toda la información que viene en el payload: nombre, email, foto, etc nos la da si hacemos la decodificación
+      // Google Token: ID_TOKEN
+      //  console.log('id_token', response.credential);
+      const body = { id_token: response.credential}
 
-      // Google Token : ID_TOKEN
-       console.log('id_token', response.credential);
-  
+      // fetch por defecto es una petición GET, pero aquí deberia ser una peticion POST
+      fetch( 'http://localhost:8080/api/auth/google', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify( body )
+      } )
+        .then( resp => resp.json() )
+        .then( resp => {
+          console.log(resp)
+        })
+        .catch( console.warn )
     }
-
-    // Una forma de hacer un sign-out rapido es eliminando las cookies del localhost:8080
   </script>
 </body>
 </html>
