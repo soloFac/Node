@@ -63,7 +63,6 @@ const googleSignIn = async ( req, res = response ) => {
         img,
         google: true
       }
-
       usuario = new Usuario( data )
       await usuario.save()
     }
@@ -82,6 +81,7 @@ const googleSignIn = async ( req, res = response ) => {
       usuario,
       token
     })
+
   } catch (error) {
     res.status(400).json({
       ok: false,
