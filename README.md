@@ -39,3 +39,6 @@ SECRETORPRIVATEKEY=Est03sMyPubl1cK3y23@913
 
 GOOGLE_CLIENT_ID=110779131529-6prh35mpdv5le8986mitp6ctai38v6vg.apps.googleusercontent.com
 GOOGLE_SECRET_ID=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
+
+# Documentación en Postman de forma Automatica
+Mediante una cuenta de Postman ( para almacenarlo en la nube )
