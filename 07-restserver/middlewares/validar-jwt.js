@@ -15,7 +15,7 @@ const validarJWT = async ( req = request, res = Response, next ) => {
   try {
     // Si el jwt no es valido se va por la parte del catch
     const { uid } = jwt.verify( token, process.env.SECRETORPRIVATEKEY )
-
+ 
     // leer el usuario que corresponde al uid
     const usuario = await Usuario.findById( uid )
 

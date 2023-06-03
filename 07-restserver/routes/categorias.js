@@ -2,6 +2,8 @@ const { Router } = require('express')
 const { check } = require('express-validator')
 
 const { validarCampos } = require('../middlewares/validar-campos')
+const { validarJWT } = require('../middlewares/validar-jwt')
+const { crearCategoria } = require('../controllers/categorias')
 
 const router = Router()
 
@@ -11,27 +13,31 @@ const router = Router()
 
 // Obtener todas las categorias - publico
 router.get('/', ( req, res ) => {
-  console.log('get')
+  res.json('get')
 })
 
 // Obtener una categoria por id - publico
 router.get('/:id', ( req, res ) => {
-  console.log('get - id')
+  res.json('get - id')
 })
 
 // Crear categoria - privado - cualquier persona con un token válido
-router.post('/', ( req, res ) => {
-  console.log('post')
-})
+router.post('/', [ 
+  validarJWT,
+  check('nombre', 'El nombre es obligatorio').not().isEmpty(),
+  validarCampos
+],
+  crearCategoria
+)
 
 // Actualizar - privado - cualquiera con token válido
 router.put('/:id', ( req, res ) => {
-  console.log('put')
+  res.json('put')
 })
 
 // Borrar una categoria - Admin
 router.delete('/:id', ( req, res ) => {
-  console.log('delete')
+  res.json('delete')
 })
 
 
