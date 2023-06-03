@@ -43,7 +43,7 @@ const usuariosPost = async (req, res) => {
   })
 }
 
-const usuariosPut = async (req, res) => {
+const usuariosPut = async ( req, res ) => {
   // Extraigo lo que viene de la URL
   const { id } =  req.params
   // Si enviamos en el body _id, aquí no deberiamos procesarlo, por lo tanto lo extraemos
