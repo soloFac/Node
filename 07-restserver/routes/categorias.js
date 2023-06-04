@@ -22,6 +22,7 @@ router.get('/',
 
 // Obtener una categoria por id - publico
 router.get('/:id', [
+    check('id','No es un id de Mongo Válido').isMongoId(),
     check('id').custom( existeCategoria )
   ],
   obtenerCategoria
@@ -39,6 +40,7 @@ router.post('/', [
 // Actualizar - privado - cualquiera con token válido
 router.put('/:id', [
     validarJWT,
+    check('id','No es un id de Mongo Válido').isMongoId(),
     check('id').custom( existeCategoria )
   ],  
   actualizarCategoria
@@ -47,6 +49,7 @@ router.put('/:id', [
 // Borrar una categoria - Admin
 router.delete('/:id',[
     validarJWT,
+    check('id','No es un id de Mongo Válido').isMongoId(),
     check('id').custom( existeCategoria )
   ],
   borrarCategoria
