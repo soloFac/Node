@@ -57,11 +57,11 @@ const actualizarCategoria = async ( req, res = response ) => {
   const { nombre: nombreCat, estado } = req.body
   
   let info = { nombre: nombreCat.toUpperCase() }
-  if ( estado ) {
+  if ( estado ) {                     // Si viene el estado, tambien lo actualizo
     info = { ...info, estado }
   }
   
-  const categoria = await Categoria.findByIdAndUpdate( id, info )
+  const categoria = await Categoria.findByIdAndUpdate( id, info ) // tambien le puedo indicar una opcion con , { new: true } para que envie el nuevo archivo
 
   res.status(200).json({ categoria })
 }
