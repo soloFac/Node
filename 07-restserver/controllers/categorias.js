@@ -2,7 +2,7 @@ const { response } = require('express')
 const { Categoria } = require('../models')
 
 // obtenerCategorias: paginado - total - populate (propio de mongoose: se puede hacer la relacion, para que se tenga toda la información del usuario con el id)
-// obtenerCategoria: populate
+// obtenerCategoria: populate -> 
 
 const obtenerCategorias = async ( req, res = response ) => {
   const { limite: lim = 5, desde = 0 } = req.query
