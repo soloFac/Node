@@ -1,9 +1,11 @@
-const express = require('express')
-const cors = require('cors')
-const { dbConnection } = require('../database/config')
+const express = require( 'express' )
+const cors = require( 'cors' )
+const fileUpload = require( 'express-fileupload' )
+
+const { dbConnection } = require( '../database/config' )
 
 class Server {
-  constructor() {
+  constructor () {
     this.app = express()
     this.port = process.env.PORT
 
@@ -27,36 +29,42 @@ class Server {
     this.routes()
   }
 
-  async conectarDB() {
+  async conectarDB () {
     await dbConnection()
   }
 
-  middlewares() {
+  middlewares () {
     // CORS
     this.app.use( cors() )
 
-    // Lectura y parseo del body - Cualquier informacion que venga aqui la va a intentar serializar a un JSON 
+    // Lectura y parseo del body - Cualquier informacion que venga aqui la va a intentar serializar a un JSON
     this.app.use( express.json() )
 
     // Directorio Publico
-    this.app.use( express.static('public') )
+    this.app.use( express.static( 'public' ) )
+
+    // Fileupload - Carga de Archivos
+    this.app.use( fileUpload( {
+      useTempFiles: true,
+      tempFileDir: '/temp/'
+    } ) )
   }
 
-  routes() {
+  routes () {
     // Defino las rutas
-    this.app.use(this.paths.auth, require('../routes/auth'))
-    this.app.use(this.paths.buscar, require('../routes/buscar'))
-    this.app.use(this.paths.usuarios, require('../routes/usuarios'))
-    this.app.use(this.paths.categorias, require('../routes/categorias'))
-    this.app.use(this.paths.productos, require('../routes/productos'))
-    this.app.use(this.paths.uploads, require('../routes/uploads'))
+    this.app.use( this.paths.auth, require( '../routes/auth' ) )
+    this.app.use( this.paths.buscar, require( '../routes/buscar' ) )
+    this.app.use( this.paths.usuarios, require( '../routes/usuarios' ) )
+    this.app.use( this.paths.categorias, require( '../routes/categorias' ) )
+    this.app.use( this.paths.productos, require( '../routes/productos' ) )
+    this.app.use( this.paths.uploads, require( '../routes/uploads' ) )
   }
 
-  listen() {
+  listen () {
     this.app.listen( this.port, () => {
-      console.log('Servidor corriendo en puerto ', this.port )
+      console.log( 'Servidor corriendo en puerto ', this.port )
     } )
   }
 }
 
-module.exports = Server;
+module.exports = Server

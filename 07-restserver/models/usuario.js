@@ -1,6 +1,6 @@
-const { Schema, model } = require('mongoose')
+const { Schema, model } = require( 'mongoose' )
 
-const UsuarioSchema = Schema({
+const UsuarioSchema = Schema( {
   nombre: {
     type: String,
     required: [true, 'El nombre es obligatorio']
@@ -30,12 +30,12 @@ const UsuarioSchema = Schema({
     type: Boolean,
     default: false
   }
-})
+} )
 
 // Sobre-escribo la funcion toJSON definida en el Schema, para que al pasarle como argumento usuario
 // ya no retorne la __v ni el password
-UsuarioSchema.methods.toJSON = function() {
-  const { __v, password, _id, ...usuario } = this.toObject();
+UsuarioSchema.methods.toJSON = function () {
+  const { __v, password, _id, ...usuario } = this.toObject()
   usuario.uid = _id
   return usuario
 }

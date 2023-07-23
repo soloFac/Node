@@ -1,6 +1,6 @@
-const { response } = require('express')
-const { Usuario, Categoria, Producto } = require('../models')
-const { ObjectId } = require('mongoose').Types
+const { response } = require( 'express' )
+const { Usuario, Categoria, Producto } = require( '../models' )
+const { ObjectId } = require( 'mongoose' ).Types
 
 const coleccionesPermitidas = [
   'usuarios',
@@ -14,93 +14,92 @@ const buscarUsuarios = async ( termino = '', res = response ) => {
 
   if ( esMongoID ) {
     const usuario = await Usuario.findById( termino )
-    return res.json({
-      results: ( usuario ) ? [ usuario ] : []
-    })
+    return res.json( {
+      results: ( usuario ) ? [usuario] : []
+    } )
   }
 
   const regex = new RegExp( termino, 'i' )
 
-  const usuarios = await Usuario.find({ 
+  const usuarios = await Usuario.find( {
     $or: [{ nombre: regex }, { correo: regex }],
     $and: [{ estado: true }]
-  })
+  } )
 
-  res.json({
+  res.json( {
     results: usuarios
-  })
+  } )
 }
 
 const buscarCategorias = async ( termino, res = response ) => {
   const esMongoID = ObjectId.isValid( termino )
 
-  console.log('Buscando categoria');
+  console.log( 'Buscando categoria' )
 
   if ( esMongoID ) {
     const usuario = await Usuario.findById( termino )
-    return res.json({
-      results: ( usuario ) ? [ usuario ] : []
-    })
+    return res.json( {
+      results: ( usuario ) ? [usuario] : []
+    } )
   }
 
   const regex = new RegExp( termino, 'i' )
 
-  const categorias = await Categoria.find({
-    $and: [{ nombre: regex }, { estado: true} ]
-  })
+  const categorias = await Categoria.find( {
+    $and: [{ nombre: regex }, { estado: true }]
+  } )
 
-  res.json({
+  res.json( {
     results: categorias
-  })
+  } )
 }
 
 const buscarProductos = async ( termino, res = response ) => {
   const esMongoID = ObjectId.isValid( termino )
 
   if ( esMongoID ) {
-    const producto = await Producto.findById( termino ).populate('categoria', 'nombre')
-    return res.json({
-      results: ( producto ) ? [ producto ] : []
-    })
+    const producto = await Producto.findById( termino ).populate( 'categoria', 'nombre' )
+    return res.json( {
+      results: ( producto ) ? [producto] : []
+    } )
   }
 
   const regex = new RegExp( termino, 'i' )
 
-  const productos = await Producto.find({
-    $and: [{ nombre: regex }, { estado: true} ]
-  }).populate('categoria', 'nombre')
+  const productos = await Producto.find( {
+    $and: [{ nombre: regex }, { estado: true }]
+  } ).populate( 'categoria', 'nombre' )
 
-  res.json({
+  res.json( {
     results: productos
-  })
+  } )
 }
-
 
 const buscar = ( req, res = response ) => {
   const { coleccion, termino } = req.params
 
   if ( !coleccionesPermitidas.includes( coleccion ) ) {
-    return res.status(400).json({
+    return res.status( 400 ).json( {
       msg: `Las colecciones permitidas son: ${ coleccionesPermitidas }`
-    })
+    } )
   }
 
   switch ( coleccion ) {
-    case 'usuarios':
-      buscarUsuarios(termino, res)
-    break;
-    case 'categorias':
-      buscarCategorias(termino, res)
-    break;
-    case 'productos':
-      buscarProductos(termino, res)
-    break;
-  
-    default:
-      res.status(500).json({
-        msg: 'Se le olvido hacer esta búsqueda'
-      })
-    break;
+  case 'usuarios':
+    buscarUsuarios( termino, res )
+    break
+  case 'categorias':
+    buscarCategorias( termino, res )
+    break
+  case 'productos':
+    buscarProductos( termino, res )
+    break
+
+  default:
+    res.status( 500 ).json( {
+      msg: 'Se le olvido hacer esta búsqueda'
+    } )
+    break
   }
 
   // res.json({

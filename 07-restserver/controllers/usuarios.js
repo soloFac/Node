@@ -1,29 +1,28 @@
-const { response, request } = require('express')
-const bcryptjs = require('bcryptjs')
+const { response, request } = require( 'express' )
+const bcryptjs = require( 'bcryptjs' )
 
-const Usuario = require('../models/usuario')
+const Usuario = require( '../models/usuario' )
 
-const usuariosGet = async (req, res) => {
+const usuariosGet = async ( req, res ) => {
   const { limite: lim = 5, desde = 0 } = req.query
   const query = { estado: true }
 
   // Para disparar ambas respuestas de manera simultanea lo que voy a hacer es lo siguiente:
   // Hay que poner el await para que ejecute las promesasa, si una da error, todas dan error
-  const [total, usuarios] = await Promise.all([
+  const [total, usuarios] = await Promise.all( [
     Usuario.countDocuments( query ),
     Usuario.find( query )
       .skip( desde )
       .limit( lim )
-  ])
+  ] )
 
-  res.json({
-    total, 
+  res.json( {
+    total,
     usuarios
-  })
+  } )
 }
 
-const usuariosPost = async (req, res) => {
-
+const usuariosPost = async ( req, res ) => {
   const { nombre, correo, password, rol } = req.body
   // A pesar de que le envie campos que no estan definidos en el modelo, estos seran ignorados y no seran grabados
   const usuario = new Usuario( { nombre, correo, password, rol } )
@@ -37,18 +36,18 @@ const usuariosPost = async (req, res) => {
   // - Guardo en la base de datos
   await usuario.save()
 
-  res.status(201).json({
+  res.status( 201 ).json( {
     msg: 'post API',
     usuario
-  })
+  } )
 }
 
 const usuariosPut = async ( req, res ) => {
   // Extraigo lo que viene de la URL
-  const { id } =  req.params
+  const { id } = req.params
   // Si enviamos en el body _id, aquí no deberiamos procesarlo, por lo tanto lo extraemos
   const { _id, password, google, ...info } = req.body
-  
+
   // TODO validar contra base de datos
   if ( password ) { // Significa que desea actualizar su contraseña
     // Podriamos hacer una ruta especial, asegurarnos de que sea la misma persona que quiere actualizar su contraseña, infinidad de validaciones que se pueden hacer
@@ -60,26 +59,26 @@ const usuariosPut = async ( req, res ) => {
   const usuario = await Usuario.findByIdAndUpdate( id, info )
 
   // Me regresa un _id pero no es el mismo
-  res.status(201).json(usuario)
+  res.status( 201 ).json( usuario )
 }
 
 // Mi delete de usuarios solo debería funcionar si es un usuario Administrador o de algún rol especifico
-const usuariosDelete = async (req, res) => {
+const usuariosDelete = async ( req, res ) => {
   const { id } = req.params
-  
-  const usuario = await Usuario.findByIdAndUpdate( id, { estado: false })
+
+  const usuario = await Usuario.findByIdAndUpdate( id, { estado: false } )
   const usuarioAutenticado = req.usuario
 
-  res.json({
+  res.json( {
     usuario, usuarioAutenticado
-  })
+  } )
 }
 
-const usuariosPatch = ((req, res) => {
-  res.json({
+const usuariosPatch = ( req, res ) => {
+  res.json( {
     msg: 'patch API'
-  })
-})
+  } )
+}
 
 module.exports = {
   usuariosGet,
