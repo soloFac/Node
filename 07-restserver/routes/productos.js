@@ -3,9 +3,10 @@ const { check } = require('express-validator')
 
 const { validarCampos } = require('../middlewares/validar-campos')
 const { validarJWT } = require('../middlewares/validar-jwt')
-const { crearProducto, obtenerProducto, actualizarProducto, borrarProducto, obtenerProductos } = require('../controllers/Productos')
+const { crearProducto, obtenerProducto, actualizarProducto, borrarProducto, obtenerProductos } = require('../controllers/productos')
 const { existeProducto, existeValor } = require('../helpers/existeProducto')
 const { esAdminRole } = require('../middlewares')
+const { existeCategoria } = require('../helpers/existeCategoria')
 
 const router = Router()
 
@@ -34,6 +35,8 @@ router.get('/:id', [
 router.post('/', [ 
   validarJWT,
   check('nombre', 'El nombre es obligatorio' ).not().isEmpty(),
+  check('categoria', 'No es un id de Mongo'). isMongoId(),
+  check('categoria').custom( existeCategoria ),
   validarCampos
 ],
 crearProducto
@@ -41,10 +44,9 @@ crearProducto
 
 // Actualizar - privado - cualquiera con token válido
 router.put('/:id', [
-  validarJWT,
-  check( 'id', 'No es un id de Mongo Válido' ).isMongoId(),
-  check( 'id' ).custom( existeProducto ),
-  check('nombre', 'El nombre es obligatorio').not().isEmpty(),
+    validarJWT,
+    check( 'categoria', 'No es un id de Mongo Válido' ).isMongoId(),
+    check( 'id' ).custom( existeProducto ),
     validarCampos
   ],
   actualizarProducto

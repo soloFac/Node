@@ -13,7 +13,7 @@ const obtenerProductos = async ( req, res = response ) => {
     Producto.find( query ).populate( 'usuario', 'nombre' )
                           .populate( 'categoria', 'nombre' )
       .skip( desde )
-      .limit( lim )
+      .limit( lim ) 
   ])
   res.json({
     total,
