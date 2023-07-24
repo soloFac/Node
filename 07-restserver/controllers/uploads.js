@@ -1,5 +1,7 @@
 const path = require( 'node:path' )
 
+const { v4: uuidv4 } = require( 'uuid' )
+
 const { response } = require( 'express' )
 
 const extensionesValidas = ['png', 'jpg', 'jpeg', 'gif']
@@ -30,16 +32,16 @@ const cargarArchivo = ( req, res = response ) => {
     } )
   }
 
-  res.json( { ext } )
+  const nombreTemp = uuidv4() + '.' + ext
 
-  // const uploadPath = path.join( __dirname, '../uploads/', archivo.name )
+  const uploadPath = path.join( __dirname, '../uploads/', nombreTemp )
 
-  // archivo.mv( uploadPath, ( err ) => {
-  //   if ( err ) {
-  //     return res.status( 500 ).json( { err } )
-  //   }
-  //   res.json( 'File puloaded to ' + uploadPath )
-  // } )
+  archivo.mv( uploadPath, ( err ) => {
+    if ( err ) {
+      return res.status( 500 ).json( { err } )
+    }
+    res.json( 'File puloaded to ' + uploadPath )
+  } )
 }
 
 module.exports = {
