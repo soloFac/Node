@@ -35,6 +35,7 @@ module.exports = {
     'no-unused-vars': 'warn',
     'space-before-function-paren': ['error', 'always'],
     'comma-spacing': ['error', { before: false, after: true }],
-    'template-curly-spacing': ['error', 'always']
+    'template-curly-spacing': ['error', 'always'],
+    'prefer-promise-reject-errors': 'off'
   }
 }

@@ -8,7 +8,7 @@ const subirArchivo = ( files, extensionesValidas, carpeta = '' ) => {
     const ext = path.extname( archivo.name ).slice( 1 )
 
     if ( !extensionesValidas.includes( ext ) ) {
-      return reject( new Error( `La extensión ${ ext } no es permitida, ${ extensionesValidas }` ) )
+      return reject( `La extensión ${ ext } no es permitida, ${ extensionesValidas }` )
     }
 
     const nombreTemp = uuidv4() + '.' + ext
@@ -16,9 +16,9 @@ const subirArchivo = ( files, extensionesValidas, carpeta = '' ) => {
 
     archivo.mv( uploadPath, ( err ) => {
       if ( err ) {
-        return reject( new Error( { err } ) )
+        return reject( { err } )
       }
-      resolve( nombreTemp )
+      return resolve( nombreTemp )
     } )
   } )
 }
