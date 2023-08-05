@@ -96,7 +96,8 @@ const actualizarImagenCloudinary = async ( req, res = response ) => {
 
   // Limpiar imagenes previas
   if ( modelo.img ) {
-
+    const publicId = path.basename( modelo.img ).split( '.' )[0]
+    cloudinary.uploader.destroy( publicId )
   }
 
   const { tempFilePath } = req.files.archivo
