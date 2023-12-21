@@ -1,4 +1,4 @@
-const { response } = require( 'express' )
+const { response, request } = require( 'express' )
 
 const esAdminRole = ( req = request, res = response, next ) => {
   // Se debe llamar despues de haber seteado en la req el usuario en validarJWT
@@ -12,7 +12,7 @@ const esAdminRole = ( req = request, res = response, next ) => {
 
   if ( rol !== 'ADMIN_ROLE' ) {
     return res.status( 401 ).json( {
-      msg: `${nombre} no es administrador - No puede hacer esto`
+      msg: `${ nombre } no es administrador - No puede hacer esto`
     } )
   }
 
@@ -29,7 +29,7 @@ const tieneRole = ( ...roles ) => {
 
     if ( !roles.includes( req.usuario.rol ) ) {
       return res.status( 401 ).json( {
-        msg: `El servicio requiere uno de estos roles ${roles}`
+        msg: `El servicio requiere uno de estos roles ${ roles }`
       } )
     }
 
